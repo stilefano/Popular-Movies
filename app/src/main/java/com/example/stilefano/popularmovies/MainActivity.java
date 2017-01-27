@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
     public boolean onOptionsItemSelected(MenuItem item){
 
         final int itemId = item.getItemId();
-        Log.d("item","a"+itemId);
         switch (itemId){
 
             case R.id.sort_by_popularity:
