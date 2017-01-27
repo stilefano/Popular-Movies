@@ -9,17 +9,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.stilefano.popularmovies.MainActivity">
-    <!--<ScrollView-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent">-->
-        <!--<TextView-->
-            <!--android:id="@+id/tv_movies_lists"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Initial Text, waiting for connection"-->
-            <!--/>-->
-
-    <!--</ScrollView>-->
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.example.stilefano.popularmovies.Utilities.NetworkUtils;
+import com.example.stilefano.popularmovies.utilities.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,15 +42,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        URL buildUrl = NetworkUtils.UriBuildUrl(getApplicationContext());
+        URL buildUrl = NetworkUtils.UriBuildUrl(getApplicationContext(),"top_rated");
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         new FetchData().execute(buildUrl);
         movieList = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayout);
+        GridLayoutManager gridLayout = new GridLayoutManager(this,1);
+        recyclerView.setLayoutManager(gridLayout);
 
 
 
@@ -75,32 +75,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
     public boolean onOptionsItemSelected(MenuItem item){
 
         final int itemId = item.getItemId();
-
-        Collections.sort(movieList, new Comparator<HashMap< String,String >>() {
-
-            @Override
-            public int compare(HashMap<String, String> lhs,
-                               HashMap<String, String> rhs) {
-
-                String firstValue = lhs.get(itemId == R.id.sort_by_popularity? "popularity":"vote_average");
-                String secondValue = rhs.get(itemId == R.id.sort_by_popularity? "popularity":"vote_average");
-
-                return Double.compare(Float.valueOf(firstValue), Float.valueOf(secondValue));
-            }
-        });
-
+        Log.d("item","a"+itemId);
         switch (itemId){
 
             case R.id.sort_by_popularity:
-                Collections.reverse(movieList);
-                moviesAdapter = new MoviesAdapter(movieList,this);
-                recyclerView.setAdapter(moviesAdapter);
+                URL popUrl = NetworkUtils.UriBuildUrl(getApplicationContext(),"popular");
+                new FetchData().execute(popUrl);
                 return true;
 
             case R.id.sort_by_rating:
-                Collections.reverse(movieList);
-                moviesAdapter = new MoviesAdapter(movieList,this);
-                recyclerView.setAdapter(moviesAdapter);
+                URL ratedUrl = NetworkUtils.UriBuildUrl(getApplicationContext(),"top_rated");
+                new FetchData().execute(ratedUrl);
                 return true;
         }
 
@@ -133,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
         protected void onPostExecute(String searchResult){
 
             mLoadingIndicator.setVisibility(View.INVISIBLE);
+
+            //empty array list if there's already a query
+            movieList.clear();
 
             JSONObject obj = null;
 
