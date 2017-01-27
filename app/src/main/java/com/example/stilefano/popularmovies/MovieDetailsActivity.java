@@ -13,7 +13,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private TextView mMovieTitle,mMovieReleaseDate,mMoviePopularity,mMovieVote,mMovieOverview;
     private ImageView mMovieImage;
-    private String movieTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +37,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
 
 
-        if(intent != null){
             mMovieTitle.setText(title);
             mMovieImage.setImageBitmap((Bitmap)hashMap.get("Img"));
             mMovieReleaseDate.setText(release);
             mMoviePopularity.setText(popularity);
             mMovieOverview.setText(overview);
             mMovieVote.setText(vote);
-        }
 
     }
 

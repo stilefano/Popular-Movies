@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +24,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 
 import com.example.stilefano.popularmovies.MoviesAdapter.MoviesAdapterOnClickHandler;
@@ -49,11 +48,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        GridLayoutManager gridLayout = new GridLayoutManager(this,1);
+        GridLayoutManager gridLayout = new GridLayoutManager(this,calculateNoOfColumns(getBaseContext()));
         recyclerView.setLayoutManager(gridLayout);
 
+    }
 
-
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 180);
+        return noOfColumns;
     }
 
     @Override

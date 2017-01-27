@@ -42,7 +42,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
         public MoviesAdapterViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.movie_title);
             poster = (ImageView) view.findViewById(R.id.movie_poster);
 
             view.setOnClickListener(this);
@@ -79,7 +78,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     @Override
     public void onBindViewHolder(MoviesAdapterViewHolder holder, int position) {
-        holder.title.setText(arrayMovieList.get(position).get("title"));
         new DownloadImageTask(holder.poster)
                 .execute(moviePath+arrayMovieList.get(position).get("poster"));
 
