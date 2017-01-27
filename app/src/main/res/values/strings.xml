@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="action_sort">Sort by popularity</string>
+    <string name="action_rating">Sort by rating</string>
+    <string name="popularity">Popularity: </string>
+    <string name="released">Released: </string>
+    <string name="vote">Vote: </string>
+</resources>
