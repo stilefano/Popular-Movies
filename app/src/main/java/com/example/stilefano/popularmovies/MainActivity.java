@@ -2,6 +2,9 @@ package com.example.stilefano.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.example.stilefano.popularmovies.MoviesAdapter.MoviesAdapterOnClickHandler;
 
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
     private RecyclerView recyclerView;
     private MoviesAdapter moviesAdapter;
     private ProgressBar mLoadingIndicator;
+    private SQLiteDatabase mDb;
+
+
 
 
     @Override
@@ -43,13 +50,24 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
         setContentView(R.layout.activity_main);
         URL buildUrl = NetworkUtils.UriBuildUrl(getApplicationContext(),"top_rated");
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-        new FetchData().execute(buildUrl);
-        movieList = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         GridLayoutManager gridLayout = new GridLayoutManager(this,calculateNoOfColumns(getBaseContext()));
         recyclerView.setLayoutManager(gridLayout);
+
+        if (savedInstanceState != null) {
+            savedInstanceState.getSerializable("key");
+            movieList = (ArrayList<HashMap<String,String>>) savedInstanceState.getSerializable("key");
+            moviesAdapter = new MoviesAdapter(movieList, MainActivity.this);
+            recyclerView.setAdapter(moviesAdapter);
+        }else{
+            new FetchData().execute(buildUrl);
+            movieList = new ArrayList<>();
+        }
+
+        MoviesDbHelper moviesDbHelper = new MoviesDbHelper(this);
+        mDb = moviesDbHelper.getReadableDatabase();
 
     }
 
@@ -90,10 +108,30 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
                 URL ratedUrl = NetworkUtils.UriBuildUrl(getApplicationContext(),"top_rated");
                 new FetchData().execute(ratedUrl);
                 return true;
+
+            case R.id.display_favorites:
+                Cursor cursor = getFavFromDB();
+                movieList.clear();
+
+                while(cursor.moveToNext()){
+                    HashMap<String, String> movie = new HashMap<>();
+                    movie.put("poster", cursor.getString(5));
+                    movie.put("title", cursor.getString(1));
+                    movie.put("release_date", cursor.getString(4));
+                    movie.put("overview", cursor.getString(3));
+                    movie.put("vote_average", cursor.getString(2));
+                    movie.put("id", cursor.getString(6));
+                    movieList.add(movie);
+                }
+
+                moviesAdapter = new MoviesAdapter(movieList, MainActivity.this);
+                recyclerView.setAdapter(moviesAdapter);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public class FetchData extends AsyncTask<URL,Void,String>{
 
@@ -130,31 +168,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
             try {
                 obj = new JSONObject(searchResult);
                 JSONArray items = null;
-                try {
-                    items = obj.getJSONArray("results");
-                    for(int i = 0; i < items.length(); i++){
-                        JSONObject c = items.getJSONObject(i);
-                        String title = c.getString("title");
-                        String poster = c.getString("poster_path");
-                        String overview = c.getString("overview");
-                        String popularity = c.getString("popularity");
-                        String release_date = c.getString("release_date");
-                        String vote_average = c.getString("vote_average");
 
-                        HashMap<String, String> movie = new HashMap<>();
+                items = obj.getJSONArray("results");
+                movieList = populateMovieHashMap(items);
 
-                        movie.put("title",title);
-                        movie.put("poster",poster);
-                        movie.put("overview",overview);
-                        movie.put("popularity",popularity);
-                        movie.put("release_date",release_date);
-                        movie.put("vote_average",vote_average);
-
-                        movieList.add(movie);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } catch (Throwable t) {
                 t.printStackTrace();
             }
@@ -165,6 +182,52 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
         }
 
 
+    }
+
+    private ArrayList<HashMap<String, String>> populateMovieHashMap(JSONArray items) throws JSONException {
+        for(int i = 0; i < items.length(); i++){
+            JSONObject c = items.getJSONObject(i);
+            String title = c.getString("title");
+            String id = c.getString("id");
+            String poster = c.getString("poster_path");
+            String overview = c.getString("overview");
+            String popularity = c.getString("popularity");
+            String release_date = c.getString("release_date");
+            String release_date_arr[] = release_date.split("\\-");
+            String vote_average = c.getString("vote_average");
+
+            HashMap<String, String> movie = new HashMap<>();
+
+            movie.put("title",title);
+            movie.put("poster",poster);
+            movie.put("overview",overview);
+            movie.put("popularity",popularity);
+            movie.put("release_date",release_date_arr[0]);
+            movie.put("vote_average",vote_average);
+            movie.put("id",id);
+
+            movieList.add(movie);
+        }
+        return movieList;
+    }
+
+    private Cursor getFavFromDB(){
+        return mDb.query(
+                MoviesContract.MoviesEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("key", movieList);
+        super.onSaveInstanceState(outState);
     }
 
 

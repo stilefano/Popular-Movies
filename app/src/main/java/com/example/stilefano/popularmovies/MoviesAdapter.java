@@ -56,6 +56,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
             movieDetail.put("Popularity",arrayMovieList.get(adapterPosition).get("popularity"));
             movieDetail.put("Overview",arrayMovieList.get(adapterPosition).get("overview"));
             movieDetail.put("Vote",arrayMovieList.get(adapterPosition).get("vote_average"));
+            movieDetail.put("Poster",arrayMovieList.get(adapterPosition).get("poster"));
+            movieDetail.put("Id",arrayMovieList.get(adapterPosition).get("id"));
             Bitmap image=((BitmapDrawable) poster.getDrawable()).getBitmap();
             Bitmap imageCompressed = Bitmap.createScaledBitmap(image, 200, 300, false);
             movieDetail.put("Img",imageCompressed);

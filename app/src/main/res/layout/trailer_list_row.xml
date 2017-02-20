@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/trailer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/trailers_title"
+        android:visibility="invisible"
+        android:background="@drawable/back"
+        />
+
+    <Button
+        android:layout_width="51dp"
+        android:layout_height="36dp"
+        android:background="@drawable/play_btn"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="20dp"
+        android:id="@+id/trailer_btn"
+        android:layout_alignLeft="@+id/trailer_tv"
+        android:visibility="invisible"
+        android:layout_below="@+id/trailer_title"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/trailer_tv"
+        android:textSize="20dp"
+        android:paddingLeft="60dp"
+        android:visibility="invisible"
+        android:layout_below="@+id/trailer_title"
+        />
+
+
+    <TextView
+        android:id="@+id/reviews_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/reviews_title"
+        android:visibility="invisible"
+        android:background="@drawable/back"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/author"
+        android:textSize="18dp"
+        android:layout_below="@+id/reviews_title"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        android:textSize="16dp"
+        android:layout_below="@+id/author"
+        android:visibility="invisible"
+        />
+
+
+
+</RelativeLayout>

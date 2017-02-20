@@ -4,6 +4,7 @@ package com.example.stilefano.popularmovies.utilities;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.stilefano.popularmovies.R;
 

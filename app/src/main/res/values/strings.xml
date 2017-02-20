@@ -4,5 +4,11 @@
     <string name="action_rating">Sort by rating</string>
     <string name="popularity">Popularity: </string>
     <string name="released">Released: </string>
-    <string name="vote">Vote: </string>
+    <string name="vote">/10</string>
+    <string name="btn_fav">Mark as favorite</string>
+    <string name="btn_fav_remove">Remove from favorite</string>
+    <string name="show_fav">Show my favourites Movies</string>
+    <string name="action_view_youtube">Action view for YouTube</string>
+    <string name="trailers_title">Trailers:</string>
+    <string name="reviews_title">Reviews:</string>
 </resources>
