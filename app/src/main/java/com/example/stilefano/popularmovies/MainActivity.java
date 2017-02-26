@@ -1,5 +1,6 @@
 package com.example.stilefano.popularmovies;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
             new FetchData().execute(buildUrl);
             movieList = new ArrayList<>();
         }
-
-        MoviesDbHelper moviesDbHelper = new MoviesDbHelper(this);
-        mDb = moviesDbHelper.getReadableDatabase();
 
     }
 
@@ -210,16 +208,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
     }
 
     private Cursor getFavFromDB(){
-        return mDb.query(
-                MoviesDbContract.MoviesEntry.TABLE_NAME,
+
+        ContentResolver resolver = getContentResolver();
+
+
+        return resolver.query(
+                MoviesDbContract.MoviesEntry.CONTENT_URI,
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
-                null
-        );
+                null);
     }
 
     @Override

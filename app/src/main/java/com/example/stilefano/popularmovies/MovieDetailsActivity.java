@@ -46,16 +46,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private Cursor cursor;
 
-    public SQLiteDatabase mDB;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MoviesDbHelper movieHelper = new MoviesDbHelper(this);
-        mDB = movieHelper.getReadableDatabase();
 
         setContentView(R.layout.activity_display_movie_details);
 
