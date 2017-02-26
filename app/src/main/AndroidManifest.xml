@@ -3,7 +3,6 @@
     package="com.example.stilefano.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +23,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <provider
+            android:name="com.example.stilefano.popularmovies.data.MovieContentProvider"
+            android:authorities="com.example.stilefano.popularmovies.data"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

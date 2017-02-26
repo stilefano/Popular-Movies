@@ -4,20 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.example.stilefano.popularmovies.data.MoviesDbContract;
+import com.example.stilefano.popularmovies.data.MoviesDbHelper;
 import com.example.stilefano.popularmovies.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.example.stilefano.popularmovies.MoviesAdapter.MoviesAdapterOnClickHandler;
 
@@ -213,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapterOnCl
 
     private Cursor getFavFromDB(){
         return mDb.query(
-                MoviesContract.MoviesEntry.TABLE_NAME,
+                MoviesDbContract.MoviesEntry.TABLE_NAME,
                 null,
                 null,
                 null,
